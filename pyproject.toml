@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "zeta-python-sdk"
+version = "0.1.0"
+description = "SDK for accessing the Zeta program"
+authors = ["Isaac Adewumi <ienioladewumi@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.rst"
+keywords = [
+    "Poetry",
+    "Solana",
+    "Cryptocurrency",
+    "DeFi",
+    "Zeta"
+]
+repository = "https://github.com/prettyirrelevant/zeta-python-sdk/"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+anchorpy = {extras = ["cli"], version = "^0.7.0"}
+solana = "^0.21.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
