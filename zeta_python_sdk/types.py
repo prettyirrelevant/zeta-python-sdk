@@ -1,4 +1,5 @@
 from enum import Enum, IntEnum
+from typing import List
 
 from construct import Optional
 from solana.publickey import PublicKey
@@ -14,10 +15,10 @@ class Wallet:
     public_key: PublicKey
 
     def sign_transaction(self, txn):
-        raise NotImplementedError
+        pass
 
     def sign_all_transactions(self, txns):
-        raise NotImplementedError
+        pass
 
 
 class DummyWallet(Wallet):
@@ -68,3 +69,119 @@ def to_product_kind(kind: dict) -> Optional[Kind]:
 
     #  We don't expect uninitialized.
     raise InvalidProductException
+
+
+class Order:
+    marketIndex: int
+    market: PublicKey
+    price: int
+    size: int
+    side: Side
+
+    # Just an identifier, shouldn't be shown to users.
+    orderId: int
+
+    # Open orders account that owns the order.
+    owner: PublicKey
+
+    # Client order id.
+    clientOrderId: int
+
+
+def order_equals(a: Order, b: Order, cmpOrderId: bool = False) -> bool:
+    order_id_match = True
+    if order_id_match:
+        order_id_match = a.orderId == b.orderId
+
+    return (
+        a.marketIndex == b.marketIndex
+        and a.market == b.market
+        and a.price == b.price
+        and a.size == b.size
+        and a.side == b.side
+        and order_id_match
+    )
+
+
+class Position:
+    marketIndex: int
+    market: PublicKey
+    position: int
+    costOfTrades: int
+
+
+def position_equals(a: Position, b: Position) -> bool:
+    return (
+        a.marketIndex == b.marketIndex
+        and a.market == b.market
+        and a.position == b.position
+        and a.costOfTrades == b.costOfTrades
+    )
+
+
+class Level:
+    price: int
+    size: int
+
+
+class DepthOrderBook:
+    bids: List[Level]
+    asks: List[Level]
+
+
+class TopLevel:
+    bid: Optional[Level]
+    ask: Optional[Level]
+
+
+class MarginType(Enum):
+    # Margin for orders.
+    INITIAL = "initial"
+
+    # Margin for positions.
+    MAINTENANCE = "maintenance"
+
+
+class MarginRequirement:
+    initialLong: int
+    initialShort: int
+    maintenanceLong: int
+    maintenanceShort: int
+
+
+class MarginAccountState:
+    balance: int
+    initialMargin: int
+    maintenanceMargin: int
+    unrealizedPnl: int
+    availableBalanceInitial: int
+    availableBalanceMaintenance: int
+
+
+class CancelArgs:
+    market: PublicKey
+    orderId: int
+    cancelSide: Side
+
+
+class MarginParams:
+    futureMarginInitial: int
+    futureMarginMaintenance: int
+    optionMarkPercentageLongInitial: int
+    optionSpotPercentageLongInitial: int
+    optionSpotPercentageShortInitial: int
+    optionDynamicPercentageShortInitial: int
+    optionMarkPercentageLongMaintenance: int
+    optionSpotPercentageLongMaintenance: int
+    optionSpotPercentageShortMaintenance: int
+    optionDynamicPercentageShortMaintenance: int
+    optionShortPutCapPercentage: int
+
+
+class ProgramAccountType(Enum):
+    MarginAccount = "MarginAccount"
+
+
+class ClockData:
+    timestamp: int
+    slot: int

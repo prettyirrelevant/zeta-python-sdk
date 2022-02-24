@@ -1,32 +1,31 @@
-import dataclasses
-from enum import Enum
+from enum import IntEnum
 
 
-class EventType(Enum):
+class EventType(IntEnum):
     # Refers to events that reflect a change in the exchange state.
-    EXCHANGE = "EXCHANGE"
+    EXCHANGE = 0
 
     # Expiration event for a zeta group.
-    EXPIRY = "EXPIRY"
+    EXPIRY = 1
 
     # Events that reflect a change in user state
     # i.e. Margin account or orders
-    USER = "USER"
+    USER = 2
 
     # A change in the clock account.
-    CLOCK = "CLOCK"
+    CLOCK = 3
 
     # A change in the greeks account.
-    GREEKS = "GREEKS"
+    GREEKS = 4
 
     # A trade event for the user margin account.
-    TRADE = "TRADE"
+    TRADE = 5
 
     # An update in the orderbook
-    ORDERBOOK = "ORDERBOOK"
+    ORDERBOOK = 6
 
     # On oracle account change.
-    ORACLE = "ORACLE"
+    ORACLE = 7
 
 
 class OrderBookEvent:
