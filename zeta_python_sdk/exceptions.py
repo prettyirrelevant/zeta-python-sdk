@@ -8,3 +8,7 @@ class NotSupportedException(Exception):
 
 class InvalidProductException(Exception):
     """Invalid product type"""
+
+
+class OutOfBoundsException(Exception):
+    """Attempt to access memory outside buffer bounds"""
